@@ -1,0 +1,34 @@
+#jk-hierarchy {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  background-color: #fff;
+  padding: 10px;
+  background-color: #fff;
+  right: 0;
+  overflow-y: scroll;
+  height: 90%;
+}
+
+#jk-hierarchy .current {
+  color: red;
+}
+
+
+#jk-hierarchy ul {
+  padding-left: 10px;
+}
+
+#jk-hierarchy ul li {
+  padding: 0.15em 0 0.5em 1.5em;
+  margin-bottom: 0.2em;
+  text-indent: 0.4em;
+  list-style:none;
+  background-size: 1.8em;
+  background-repeat: no-repeat;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__page.svg');
+}
+
+#jk-hierarchy ul li.folder {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__folder.svg');
+}
