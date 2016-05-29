@@ -97,7 +97,6 @@ describe("JK chrome extension for Github", function () {
 
   });
 
-
 });
 
 function pressJ (main) {

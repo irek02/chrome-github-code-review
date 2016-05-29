@@ -22,8 +22,9 @@ Main.prototype.generateFileHierarchy = function() {
 
   var hierarchy = $('<p id="jk-hierarchy"></p>');
   var structure = this.getHierarchyStructure();
+  var compressedStructure = main.compressHierarchy(structure);
 
-  this.generateFileHierarchyHtml(hierarchy, structure);
+  this.generateFileHierarchyHtml(hierarchy, compressedStructure);
 
   $("body").prepend(hierarchy);
 
@@ -56,7 +57,6 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
 
   });  
 }
-
 
 Main.prototype.reGenerateFileHierarchy = function(currentEl) {
 
@@ -100,6 +100,40 @@ Main.prototype.getHierarchyStructure = function() {
   });
 
   return result;
+};
+
+Main.prototype.compressHierarchy = function(hierarchy) {
+  var newObj = {};
+  var path = "";
+
+  traverse(hierarchy, newObj, path);
+
+  return newObj;
+
+  function traverse(obj, newObj, path) {
+    for(var key in obj) {
+
+      path = path + String(key) + '/';
+      
+      if (Array.isArray(obj[key])) {
+        newObj[path] = obj[key];
+        path = "";
+        continue;
+      }
+      
+      if (!Array.isArray(obj[key]) && Object.keys(obj[key]).length > 1) {
+        newObj[path] = {};
+        traverse(obj[key], newObj[path], "");
+        path = "";
+        continue;
+      }
+      
+      traverse(obj[key], newObj, path);
+      
+      path = "";
+      
+    }
+  }
 };
 
 Main.prototype.addProp = function(res, arr) {

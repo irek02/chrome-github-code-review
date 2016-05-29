@@ -30,5 +30,5 @@
 }
 
 #jk-hierarchy ul li.folder {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__folder.svg');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/objects__folder--open.svg');
 }
