@@ -13,6 +13,18 @@ Main.prototype.init = function() {
 
   $('#jk-hierarchy').css('margin-top', this.toolBarHeight);
 
+  $('#jk-hierarchy').find('.folder').click(function () {
+    $header = $(this);
+    $content = $header.next();
+    $content.slideToggle(10, function () {
+      $header.toggleClass('collapsed');
+    });
+  });
+
+  $('#jk-hierarchy').find('.jk-file').click(function (f) {
+    // console.log(f);
+  });
+
   if (window == top) {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
   }
@@ -47,8 +59,14 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
     if (typeof structure[index] === 'object') {
       item.addClass('folder');
     }
+    else if (typeof structure[index] === 'string') {
+      item.addClass('jk-file');
+    }
 
-    list.append(item);
+    if (index !== '_files_') {
+      list.append(item);
+    }
+    
     hierarchy.append(list);
     
     if (typeof structure[index] === 'object') {
@@ -113,10 +131,18 @@ Main.prototype.compressHierarchy = function(hierarchy) {
   function traverse(obj, newObj, path) {
     for(var key in obj) {
 
-      path = path + String(key) + '/';
-      
+      if (key == "_files_" && Object.keys(obj).length > 1) {
+        newObj['_files_'] = obj[key];
+        continue;
+      }
+
+      if (key !== "_files_") {
+        path = path + String(key) + '/';
+      }
+
       if (Array.isArray(obj[key])) {
-        newObj[path] = obj[key];
+        newObj[path] = {};
+        newObj[path]['_files_'] = obj[key];
         path = "";
         continue;
       }
@@ -150,10 +176,10 @@ Main.prototype.addProp = function(res, arr) {
   
   var fname = arr.splice(0,1);
   if (!hasProp) {
-    res[prop] = [fname[0]];  
+    res[prop] = {_files_: [fname[0]]};  
   }
   else {
-    res[prop].push(fname[0]);    
+    res[prop]._files_.push(fname[0]);
   }
 };
 

@@ -20,6 +20,7 @@
 }
 
 #jk-hierarchy ul li {
+  cursor: pointer;
   padding: 0.15em 0 0.5em 1.5em;
   margin-bottom: 0.2em;
   text-indent: 0.4em;
@@ -28,7 +29,14 @@
   background-repeat: no-repeat;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__page.svg');
 }
+#jk-hierarchy ul li:hover {
+  color: blue;
+}
 
 #jk-hierarchy ul li.folder {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/objects__folder--open.svg');
+}
+
+#jk-hierarchy ul li.folder.collapsed {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__folder.svg');
 }

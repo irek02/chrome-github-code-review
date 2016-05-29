@@ -9,6 +9,8 @@ describe("JK chrome extension for Github", function () {
   file5 = $('<div class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</span></div>');
   file6 = $('<div class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</span></div>');
   file7 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
+  file8 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
+  file9 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
   
   
 
@@ -19,6 +21,8 @@ describe("JK chrome extension for Github", function () {
   files.append(file5);
   files.append(file6);
   files.append(file7);
+  files.append(file8);
+  files.append(file9);
 
 
   $(document.body).append(files);
@@ -71,29 +75,15 @@ describe("JK chrome extension for Github", function () {
   // });
 
 
-  it('should generate the structure of the file hierarchy', function () {
+  it('should generate a file hirarchy with an expected number of folders and files', function () {
 
-    expect(main.getHierarchyStructure()).toEqual({
-      lib: {
-        Helper: {
-          Doc: ['Link.php']
-        }
-      },
-      src: {
-        Application: {
-          Access: ['UserAccess.php', 'TokenAccess.php'],
-          Finder: ['OrganizationFinderInterface.php']
-        },
-        Infrastructure: {
-          Finder: ['DrupalApplicationFinder.php', 'DrupalOrganizationFinder.php']
-        }
-      },
-      tests: {
-        Application: {
-          Access: ['UserAccessTest.php']
-        }
-      }
-    });
+    main.generateFileHierarchy();
+
+    var folders = $('#jk-hierarchy').find('.folder');
+    expect(folders.length).toBe(8);
+    
+    var files = $('#jk-hierarchy').find('.jk-file');
+    expect(files.length).toBe(9);
 
   });
 
