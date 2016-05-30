@@ -100,7 +100,7 @@ Main.prototype.doKeyPress = function(e) {
   }
 
   if (e.keyCode == this.z_key) {
-    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy')[0].innerHTML)) {
+    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy') && $('#jk-hierarchy')[0].innerHTML)) {
       $('#jk-hierarchy').remove();
       this.generateFileHierarchy();
       $('#jk-hierarchy').slideToggle(10);
@@ -178,11 +178,20 @@ Main.prototype.addProp = function(res, arr) {
   }
   
   var fname = arr.splice(0,1);
+
+
+
   if (!hasProp) {
-    res[prop] = {_files_: [fname[0]]};  
+    res[prop] = {_files_: [fname[0]]};
   }
   else {
-    res[prop]._files_.push(fname[0]);
+
+    if (!res[prop].hasOwnProperty('_files_')) {
+      res[prop]._files_ = [];
+    }
+
+    res[prop]._files_.push(fname[0]);  
+    
   }
 };
 
