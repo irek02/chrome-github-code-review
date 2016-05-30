@@ -2,18 +2,19 @@ describe("JK chrome extension for Github", function () {
 
   files = $('<div id="files"></div>');
 
-  file1 = $('<div id="diff-0" class="file"><span class="user-select-contain" title="lib/Helper/Doc/Link.php">.ib/Helper/Doc/Link.php</span></div>');
-  file2 = $('<div id="diff-1" class="file"><span class="user-select-contain" title="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</span></div>');
-  file3 = $('<div id="diff-2" class="file"><span class="user-select-contain" title="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</span></div>');
-  file4 = $('<div id="diff-3" class="file"><span class="user-select-contain" title="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</span></div>');
-  file5 = $('<div id="diff-4" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</span></div>');
-  file6 = $('<div id="diff-5" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</span></div>');
-  file7 = $('<div id="diff-6" class="file"><span class="user-select-contain" title="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</span></div>');
-  file8 = $('<div id="diff-7" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
-  file9 = $('<div id="diff-8" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
-  file10 = $('<div id="diff-9" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
-  file11 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="Gemfile">Gemfile</span></div>');
-  file12 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="Gemfile.lock">Gemfile.lock</span></div>');
+  file1 = $('<div id="diff-0" class="file"><span class="user-select-contain" title="Gemfile">Gemfile</span></div>');
+  file2 = $('<div id="diff-1" class="file"><span class="user-select-contain" title="Gemfile.lock">Gemfile.lock</span></div>');
+  file3 = $('<div id="diff-2" class="file"><span class="user-select-contain" title="lib/Helper/Doc/Link.php">.ib/Helper/Doc/Link.php</span></div>');
+  file4 = $('<div id="diff-3" class="file"><span class="user-select-contain" title="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</span></div>');
+  file5 = $('<div id="diff-4" class="file"><span class="user-select-contain" title="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</span></div>');
+  file6 = $('<div id="diff-5" class="file"><span class="user-select-contain" title="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</span></div>');
+  file7 = $('<div id="diff-6" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</span></div>');
+  file8 = $('<div id="diff-7" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</span></div>');
+  file9 = $('<div id="diff-8" class="file"><span class="user-select-contain" title="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</span></div>');
+  file10 = $('<div id="diff-9" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
+  file11 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
+  file12 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
+  
   
   
   files.append(file1);
@@ -57,8 +58,6 @@ describe("JK chrome extension for Github", function () {
 
   it('should generate a file hirarchy with an expected number of folders and files', function () {
 
-    main.generateFileHierarchy();
-
     var folders = $('#jk-hierarchy').find('.folder');
     expect(folders.length).toBe(8);
     
@@ -69,8 +68,6 @@ describe("JK chrome extension for Github", function () {
 
   
   it('should generate a file hirarchy with files in proper order', function () {
-
-    main.generateFileHierarchy();
     
     var generatedFiles = $('#jk-hierarchy').find('.jk-file');
     var existingFiles = $('.file');
