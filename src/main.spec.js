@@ -13,7 +13,6 @@ describe("JK chrome extension for Github", function () {
   file9 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
   
   
-
   files.append(file1);
   files.append(file2);
   files.append(file3);
@@ -28,13 +27,9 @@ describe("JK chrome extension for Github", function () {
   $(document.body).append(files);
 
   beforeEach(function() {
-
     main = new Main();
-
     main.init();
-
   });
-
 
 
   it('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
@@ -51,28 +46,7 @@ describe("JK chrome extension for Github", function () {
 
     expect(main.getCurrentEl()).toEqual(file2[0]);
 
-  })
-
-  // it('should display file hierarchy', function () {
-
-  //   expect($('#jk-hierarchy').text()).toContain(file1.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file2.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file3.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file4.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file5.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file6.text());
-  //   expect($('#jk-hierarchy').text()).toContain(file7.text());
-
-  // });
-
-  // it('should hightlight current file', function () {
-
-  //   pressJ(main);
-  //   pressJ(main);
-
-  //   expect($('#jk-hierarchy').find('.current').text()).toBe(file2.text());
-
-  // });
+  });
 
 
   it('should generate a file hirarchy with an expected number of folders and files', function () {
