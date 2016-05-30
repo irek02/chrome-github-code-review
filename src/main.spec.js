@@ -11,6 +11,8 @@ describe("JK chrome extension for Github", function () {
   file7 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
   file8 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
   file9 = $('<div class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
+  file10 = $('<div class="file"><span class="user-select-contain" title="Gemfile">Gemfile</span></div>');
+  file11 = $('<div class="file"><span class="user-select-contain" title="Gemfile.lock">Gemfile.lock</span></div>');
   
   
   files.append(file1);
@@ -22,6 +24,8 @@ describe("JK chrome extension for Github", function () {
   files.append(file7);
   files.append(file8);
   files.append(file9);
+  files.append(file10);
+  files.append(file11);
 
 
   $(document.body).append(files);
@@ -57,7 +61,7 @@ describe("JK chrome extension for Github", function () {
     expect(folders.length).toBe(8);
     
     var files = $('#jk-hierarchy').find('.jk-file');
-    expect(files.length).toBe(9);
+    expect(files.length).toBe(11);
 
   });
 

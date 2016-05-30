@@ -125,11 +125,49 @@ Main.prototype.getHierarchyStructure = function() {
   var addProp = this.addProp.bind(this);
   $.each(files, function(index, file) {
     var parts = $(file).attr('title').split('/');
+
+    if (parts.length == 1) {
+      if (!result.hasOwnProperty('_files_')) {
+        result._files_ = [];  
+      }
+      result._files_.push(parts[0]);
+      return true;
+    }
+
     addProp(result, parts);
   });
 
   return result;
 };
+
+Main.prototype.addProp = function(res, arr) {
+  var prop = arr.splice(0,1);
+  var hasProp = res.hasOwnProperty(prop);
+
+  if (arr.length > 1) {
+    if (!hasProp) {
+      res[prop] = {};  
+    }
+    this.addProp(res[prop], arr);
+    return;
+  }
+  
+  var fname = arr.splice(0,1);
+
+  if (!hasProp) {
+    res[prop] = {_files_: [fname[0]]};
+  }
+  else {
+
+    if (!res[prop].hasOwnProperty('_files_')) {
+      res[prop]._files_ = [];
+    }
+
+    res[prop]._files_.push(fname[0]);  
+    
+  }
+};
+
 
 Main.prototype.compressHierarchy = function(hierarchy) {
   var newObj = {};
@@ -173,35 +211,6 @@ Main.prototype.compressHierarchy = function(hierarchy) {
   }
 };
 
-Main.prototype.addProp = function(res, arr) {
-  var prop = arr.splice(0,1);
-  var hasProp = res.hasOwnProperty(prop);
-
-  if (arr.length > 1) {
-    if (!hasProp) {
-      res[prop] = {};  
-    }
-    this.addProp(res[prop], arr);
-    return;
-  }
-  
-  var fname = arr.splice(0,1);
-
-
-
-  if (!hasProp) {
-    res[prop] = {_files_: [fname[0]]};
-  }
-  else {
-
-    if (!res[prop].hasOwnProperty('_files_')) {
-      res[prop]._files_ = [];
-    }
-
-    res[prop]._files_.push(fname[0]);  
-    
-  }
-};
 
 Main.prototype.getCurrentEl = function() {
   return this.files[this.currentFileId];
