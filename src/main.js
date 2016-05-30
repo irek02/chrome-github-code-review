@@ -205,11 +205,11 @@ Main.prototype.updateCurrentPos = function(keyCode) {
 
 
 Main.prototype.scrollTo = function(el) {
+
   var that = this;
   var offTop = $(el).offset().top - this.toolBarHeight - 10;
   
   $('body').scrollTop(offTop);
-
   that.updateCurentDiffPos();
 
 };
@@ -230,7 +230,7 @@ Main.prototype.updateCurentDiffPos = function() {
   $('#jk-hierarchy').find('.jk-file*[data-file-id="' + id + '"]').addClass('current');
 
 
-  if ($('#jk-hierarchy').is(":visible")) {
+  if ($('#jk-hierarchy').is(":visible") && $('#jk-hierarchy').find('.jk-file.current').is(":visible")) {
     while (isAbove()) {
       $('#jk-hierarchy').scrollTop($('#jk-hierarchy').scrollTop() - 10);  
     }
