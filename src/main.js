@@ -8,14 +8,9 @@ Main.prototype.init = function() {
   this.k_key = 75; // k key
   this.z_key = 90; // z key
 
-  this.files = this.getFiles();
   this.currentFileId = null;
-  this.toolBarHeight = $('.pr-toolbar').height();
 
   this.generateFileHierarchy();
-
-  $('#jk-hierarchy').css('margin-top', this.toolBarHeight);
-  $('#jk-hierarchy').css('width', $('#jk-hierarchy').width() + 10);
 
   if (window == top) {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
@@ -23,6 +18,11 @@ Main.prototype.init = function() {
 };
 
 Main.prototype.generateFileHierarchy = function() {
+
+  this.currentPageUrl = window.location.href;
+
+  this.files = this.getFiles();
+  this.toolBarHeight = $('.pr-toolbar').height();
 
   var hierarchy = $('<p id="jk-hierarchy"></p>');
   var structure = this.getHierarchyStructure();
@@ -36,6 +36,8 @@ Main.prototype.generateFileHierarchy = function() {
   this.updateCurentDiffPos();
 
   hierarchy.css('margin-top', this.toolBarHeight);
+  $('#jk-hierarchy').css('margin-top', this.toolBarHeight);
+  $('#jk-hierarchy').css('width', $('#jk-hierarchy').width()*1.2);
 
   $('#jk-hierarchy').find('.folder').click(function () {
     $header = $(this);
@@ -98,6 +100,11 @@ Main.prototype.doKeyPress = function(e) {
   }
 
   if (e.keyCode == this.z_key) {
+    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy')[0].innerHTML)) {
+      $('#jk-hierarchy').remove();
+      this.generateFileHierarchy();
+      $('#jk-hierarchy').slideToggle(10);
+    }
     $('#jk-hierarchy').slideToggle(10);
   }
   
@@ -221,6 +228,28 @@ Main.prototype.updateCurentDiffPos = function() {
 
   $('#jk-hierarchy').find('.jk-file.current').removeClass('current');
   $('#jk-hierarchy').find('.jk-file*[data-file-id="' + id + '"]').addClass('current');
+
+
+  if ($('#jk-hierarchy').is(":visible")) {
+    while (isAbove()) {
+      $('#jk-hierarchy').scrollTop($('#jk-hierarchy').scrollTop() - 10);  
+    }
+
+    while (isBelow()) {
+      $('#jk-hierarchy').scrollTop($('#jk-hierarchy').scrollTop() + 10);  
+    }  
+  }
+    
+
+  function isAbove() {
+    var pos = $('#jk-hierarchy').find('.jk-file.current').position();
+    return pos && pos.top < 0;
+  }
+
+  function isBelow() {
+    var pos = $('#jk-hierarchy').find('.jk-file.current').position();
+    return pos && pos.top > $('#jk-hierarchy').height();
+  }
   
 };
 
