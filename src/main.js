@@ -6,9 +6,11 @@ Main.prototype.init = function() {
 
   this.j_key = 74; // j key
   this.k_key = 75; // k key
-  this.z_key = 90; // z key
 
-  this.currentFileId = null;
+  this.n_key = 78; // n key
+  this.p_key = 80; // p key
+
+  this.z_key = 90; // z key
 
   this.generateFileHierarchy();
 
@@ -20,6 +22,8 @@ Main.prototype.init = function() {
 Main.prototype.generateFileHierarchy = function() {
 
   this.currentPageUrl = window.location.href;
+  this.currentFileId = null;
+  this.currentCommentId = null;
 
   this.files = this.getFiles();
   this.toolBarHeight = $('.pr-toolbar').height();
@@ -35,8 +39,6 @@ Main.prototype.generateFileHierarchy = function() {
 
   this.updateCurentDiffPos();
 
-  hierarchy.css('margin-top', this.toolBarHeight);
-  $('#jk-hierarchy').css('margin-top', this.toolBarHeight);
   $('#jk-hierarchy').css('width', $('#jk-hierarchy').width()*1.2);
 
   $('#jk-hierarchy').find('.folder').click(function () {
@@ -49,7 +51,7 @@ Main.prototype.generateFileHierarchy = function() {
 
   var that = this;
 
-  $('#jk-hierarchy').find('.jk-file').click(function (f) {
+  $('#jk-hierarchy').find('.jk-file').click(function () {
     that.scrollTo($('#' + $(this).data('file-id')));
     that.currentFileId = $(this).data('file-id').split('-')[1];
   });
@@ -96,6 +98,12 @@ Main.prototype.doKeyPress = function(e) {
   if (e.keyCode == this.j_key || e.keyCode == this.k_key) {
     this.updateCurrentPos(e.keyCode);
     var el = this.getCurrentEl();
+    this.scrollTo(el);
+  }
+
+  if (e.keyCode == this.n_key || e.keyCode == this.p_key) {
+    this.updateCurrentCommentPos(e.keyCode);
+    var el = this.getCurrentCommentEl();
     this.scrollTo(el);
   }
 
@@ -213,6 +221,24 @@ Main.prototype.updateCurrentPos = function(keyCode) {
 };
 
 
+Main.prototype.updateCurrentCommentPos = function(keyCode) {
+  if (this.currentCommentId == null) {
+    this.currentCommentId = 0;
+  }
+  else if (this.currentCommentId < this.getComments().length - 1 && keyCode == this.n_key) {
+   this.currentCommentId++; 
+  }
+  else if (this.currentCommentId > 0 && keyCode == this.p_key) {
+   this.currentCommentId--; 
+  }
+};
+
+
+Main.prototype.getCurrentCommentEl = function() {
+  return this.getComments()[this.currentCommentId];
+};
+
+
 Main.prototype.scrollTo = function(el) {
 
   var that = this;
@@ -264,4 +290,9 @@ Main.prototype.updateCurentDiffPos = function() {
 
 Main.prototype.getFiles = function() {
   return $('.file');
+};
+
+
+Main.prototype.getComments = function() {
+  return $('.main-content .timeline-comment');
 };
