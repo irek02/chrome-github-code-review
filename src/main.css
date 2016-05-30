@@ -2,16 +2,15 @@
   position: fixed;
   z-index: 10;
   top: 0;
-  background-color: #fff;
+  background: rgba(247, 247, 247, 0.90);
   padding: 10px;
-  background-color: #fff;
   right: 0;
   overflow-y: scroll;
   height: 90%;
 }
 
 #jk-hierarchy .current {
-  color: red;
+  background-color: lightblue;
 }
 
 
@@ -28,9 +27,6 @@
   background-size: 1.8em;
   background-repeat: no-repeat;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__page.svg');
-}
-#jk-hierarchy ul li:hover {
-  color: blue;
 }
 
 #jk-hierarchy ul li.folder {

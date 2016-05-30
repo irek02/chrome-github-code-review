@@ -2,8 +2,11 @@ function Main() {
 }
 Main.prototype.init = function() {
 
+  this.cnt = 0;
+
   this.j_key = 74; // j key
   this.k_key = 75; // k key
+  this.z_key = 90; // z key
 
   this.files = this.getFiles();
   this.currentFileId = null;
@@ -12,18 +15,7 @@ Main.prototype.init = function() {
   this.generateFileHierarchy();
 
   $('#jk-hierarchy').css('margin-top', this.toolBarHeight);
-
-  $('#jk-hierarchy').find('.folder').click(function () {
-    $header = $(this);
-    $content = $header.next();
-    $content.slideToggle(10, function () {
-      $header.toggleClass('collapsed');
-    });
-  });
-
-  $('#jk-hierarchy').find('.jk-file').click(function (f) {
-    // console.log(f);
-  });
+  $('#jk-hierarchy').css('width', $('#jk-hierarchy').width() + 10);
 
   if (window == top) {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
@@ -37,10 +29,29 @@ Main.prototype.generateFileHierarchy = function() {
   var compressedStructure = main.compressHierarchy(structure);
 
   this.generateFileHierarchyHtml(hierarchy, compressedStructure);
+  this.cnt = 0;
 
   $("body").prepend(hierarchy);
 
+  this.updateCurentDiffPos();
+
   hierarchy.css('margin-top', this.toolBarHeight);
+
+  $('#jk-hierarchy').find('.folder').click(function () {
+    $header = $(this);
+    $content = $header.next();
+    $content.slideToggle(10, function () {
+      $header.toggleClass('collapsed');
+    });
+  });
+
+  var that = this;
+
+  $('#jk-hierarchy').find('.jk-file').click(function (f) {
+    that.scrollTo($('#' + $(this).data('file-id')));
+    that.currentFileId = $(this).data('file-id').split('-')[1];
+  });
+  
 
 };
 
@@ -61,6 +72,8 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
     }
     else if (typeof structure[index] === 'string') {
       item.addClass('jk-file');
+      item.attr("data-file-id", "diff-" + that.cnt);
+      that.cnt = that.cnt + 1;
     }
 
     if (index !== '_files_') {
@@ -76,35 +89,18 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
   });  
 }
 
-Main.prototype.reGenerateFileHierarchy = function(currentEl) {
-
-  var hierarchy = this.getHierarchyEl();
-
-  hierarchy.remove();
-
-  this.generateFileHierarchy();
-
-};
-
-
-Main.prototype.getHierarchyEl = function() {
-  return $('#jk-hierarchy');
-};
-
-
 Main.prototype.doKeyPress = function(e) {
 
-  if (e.keyCode != this.j_key && e.keyCode != this.k_key) {
-    return;
+  if (e.keyCode == this.j_key || e.keyCode == this.k_key) {
+    this.updateCurrentPos(e.keyCode);
+    var el = this.getCurrentEl();
+    this.scrollTo(el);
   }
 
-  this.updateCurrentPos(e.keyCode);
-
-  var el = this.getCurrentEl();
-
-  this.scrollTo(el);
-
-  this.reGenerateFileHierarchy();
+  if (e.keyCode == this.z_key) {
+    $('#jk-hierarchy').slideToggle(10);
+  }
+  
 };
 
 
@@ -202,11 +198,31 @@ Main.prototype.updateCurrentPos = function(keyCode) {
 
 
 Main.prototype.scrollTo = function(el) {
-  $('html, body').animate({
-    scrollTop: $(el).offset().top - this.toolBarHeight - 10
-  }, 10);
+  var that = this;
+  var offTop = $(el).offset().top - this.toolBarHeight - 10;
+  
+  $('body').scrollTop(offTop);
+
+  that.updateCurentDiffPos();
+
 };
 
+Main.prototype.updateCurentDiffPos = function() {
+  var id = null;
+  
+  if (!this.getFiles) return;
+
+  $.each(this.getFiles(), function(key, value) {    
+    var rect = value.getBoundingClientRect();
+    if (rect.top < 139) {
+      id = $(value).attr("id");
+    }
+  });
+
+  $('#jk-hierarchy').find('.jk-file.current').removeClass('current');
+  $('#jk-hierarchy').find('.jk-file*[data-file-id="' + id + '"]').addClass('current');
+  
+};
 
 Main.prototype.getFiles = function() {
   return $('.file');
