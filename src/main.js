@@ -93,6 +93,10 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
 
 Main.prototype.doKeyPress = function(e) {
 
+  if ($(e.target).prop("tagName") != 'BODY') {
+    return;
+  }
+
   if (e.keyCode == this.j_key || e.keyCode == this.k_key) {
     this.updateCurrentPos(e.keyCode);
     var el = this.getCurrentEl();
