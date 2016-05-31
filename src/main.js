@@ -70,7 +70,7 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
     var label = (typeof file == 'string') ? file : index;
     
     var item = $('<li>' + label + '</li>');
-
+      
     if (typeof structure[index] === 'object') {
       item.addClass('folder');
     }
@@ -80,10 +80,8 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
       that.cnt = that.cnt + 1;
     }
 
-    if (index !== '_files_') {
-      list.append(item);
-    }
     
+    list.append(item);
     hierarchy.append(list);
     
     if (typeof structure[index] === 'object') {
@@ -118,21 +116,12 @@ Main.prototype.doKeyPress = function(e) {
   
 };
 
-
 Main.prototype.getHierarchyStructure = function() {
   var result = {};
   var files = this.files.find('.user-select-contain');
   var addProp = this.addProp.bind(this);
   $.each(files, function(index, file) {
     var parts = $(file).attr('title').split('/');
-
-    if (parts.length == 1) {
-      if (!result.hasOwnProperty('_files_')) {
-        result._files_ = [];  
-      }
-      result._files_.push(parts[0]);
-      return true;
-    }
 
     addProp(result, parts);
   });
@@ -141,33 +130,24 @@ Main.prototype.getHierarchyStructure = function() {
 };
 
 Main.prototype.addProp = function(res, arr) {
-  var prop = arr.splice(0,1);
-  var hasProp = res.hasOwnProperty(prop);
 
-  if (arr.length > 1) {
-    if (!hasProp) {
-      res[prop] = {};  
-    }
-    this.addProp(res[prop], arr);
+  if (arr.length == 1) {
+    var fname = arr.splice(0,1);
+    res[fname[0]] = fname[0];
     return;
   }
-  
-  var fname = arr.splice(0,1);
 
-  if (!hasProp) {
-    res[prop] = {_files_: [fname[0]]};
-  }
-  else {
-
-    if (!res[prop].hasOwnProperty('_files_')) {
-      res[prop]._files_ = [];
+  if (arr.length > 1) {
+    var prop = arr.splice(0,1);
+    
+    if (!res.hasOwnProperty(prop)) {
+      res[prop] = {};  
     }
 
-    res[prop]._files_.push(fname[0]);  
-    
+    this.addProp(res[prop], arr);
   }
-};
 
+};
 
 Main.prototype.compressHierarchy = function(hierarchy) {
   var newObj = {};
@@ -180,23 +160,25 @@ Main.prototype.compressHierarchy = function(hierarchy) {
   function traverse(obj, newObj, path) {
     for(var key in obj) {
 
-      if (key == "_files_" && Object.keys(obj).length > 1) {
-        newObj['_files_'] = obj[key];
-        continue;
-      }
-
-      if (key !== "_files_") {
+      if (!path || typeof obj[key] != 'string') {
         path = path + String(key) + '/';
       }
 
-      if (Array.isArray(obj[key])) {
-        newObj[path] = {};
-        newObj[path]['_files_'] = obj[key];
+      if (typeof obj[key] == 'string') {
+        
+        if (Object.keys(obj).length == 1) {
+          newObj[path] = {};
+          newObj[path][String(key) + '/'] = obj[key];
+        }
+        else {
+          newObj[path] = obj[key];
+        }
+        
         path = "";
         continue;
       }
-      
-      if (!Array.isArray(obj[key]) && Object.keys(obj[key]).length > 1) {
+
+      if (typeof obj[key] == 'object' && Object.keys(obj[key]).length > 1) {
         newObj[path] = {};
         traverse(obj[key], newObj[path], "");
         path = "";
@@ -210,7 +192,6 @@ Main.prototype.compressHierarchy = function(hierarchy) {
     }
   }
 };
-
 
 Main.prototype.getCurrentEl = function() {
   return this.files[this.currentFileId];

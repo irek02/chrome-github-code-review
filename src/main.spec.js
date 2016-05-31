@@ -65,7 +65,7 @@ describe("JK chrome extension for Github", function () {
     expect(files.length).toBe(12);
 
   });
-
+  
   
   it('should generate a file hirarchy with files in proper order', function () {
     
