@@ -15,6 +15,8 @@ describe("JK chrome extension for Github", function () {
   file11 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
   file12 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
   
+  comment1 = $('<div class="comment js-comment">Comment!</div>');
+  file1.append(comment1);
   
   
   files.append(file1);
@@ -29,7 +31,6 @@ describe("JK chrome extension for Github", function () {
   files.append(file10);
   files.append(file11);
   files.append(file12);
-
 
   $(document.body).append(files);
 
@@ -73,8 +74,26 @@ describe("JK chrome extension for Github", function () {
     var existingFiles = $('.file');
 
     $.each(generatedFiles, function (key, generatedFile) {
-      var existingFile = $(existingFiles[key]).text();
-      expect(existingFile).toContain($(generatedFile).text());
+      var existingFile = $(existingFiles[key]).find('span').text();
+      expect(existingFile).toContain($(generatedFile).find('.file-name').text());
+    });
+
+  });
+  
+  
+  it('should count number of comments per file', function () {
+    
+    var generatedFiles = $('#jk-hierarchy').find('.jk-file');
+    var existingFiles = $('.file');
+
+    $.each(generatedFiles, function (key, generatedFile) {
+      comments = $(existingFiles[key]).find('.comment.js-comment');
+
+      if (comments.length) {
+        var commentCntStr = '(' + comments.length + ')';
+        expect($(generatedFile).find('.comment-count').text()).toContain(commentCntStr);
+      }
+
     });
 
   });

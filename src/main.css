@@ -1,5 +1,8 @@
 #jk-hierarchy {
+  max-width: 35%;
+  overflow-x: scroll;
   position: fixed;
+  white-space: nowrap;
   z-index: 35;
   top: 0;
   background: rgba(247, 247, 247, 0.90);

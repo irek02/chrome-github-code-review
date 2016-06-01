@@ -33,11 +33,12 @@ Main.prototype.generateFileHierarchy = function() {
   var compressedStructure = main.compressHierarchy(structure);
 
   this.generateFileHierarchyHtml(hierarchy, compressedStructure);
-  this.cnt = 0;
 
   $("body").prepend(hierarchy);
 
   this.updateCurentDiffPos();
+
+  this.appendCommentCounts();
 
   $('#jk-hierarchy').css('width', $('#jk-hierarchy').width()*1.2);
 
@@ -59,6 +60,21 @@ Main.prototype.generateFileHierarchy = function() {
 
 };
 
+Main.prototype.appendCommentCounts = function() {
+  var files = $('#jk-hierarchy').find('.jk-file');
+  $.each(files, function(key, item) {
+
+    var fileId = $(item).data('file-id');
+
+    var comments = $('#' + fileId).find('.comment.js-comment');
+    if (comments.length) {
+      var count = $('<span class="comment-count"> (' + comments.length + ')</span>');
+      $(item).append(count);
+    }
+    
+  });
+};
+
 Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
 
   var list = $(document.createElement('ul'));
@@ -75,6 +91,7 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
       item.addClass('folder');
     }
     else if (typeof structure[index] === 'string') {
+      item = $('<li><span class="file-name">' + label + '</span></li>');
       item.addClass('jk-file');
       item.attr("data-file-id", "diff-" + that.cnt);
       that.cnt = that.cnt + 1;
@@ -93,7 +110,8 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
 
 Main.prototype.doKeyPress = function(e) {
 
-  if ($(e.target).prop("tagName") != 'BODY') {
+  var clickedTarget = $(e.target).prop("tagName");
+  if (clickedTarget != 'BODY' && clickedTarget != undefined) {
     return;
   }
 
