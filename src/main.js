@@ -71,7 +71,7 @@ Main.prototype.appendCommentCounts = function() {
       var count = $('<span class="comment-count"> (' + comments.length + ')</span>');
       $(item).append(count);
     }
-    
+
   });
 };
 
@@ -252,6 +252,8 @@ Main.prototype.getCurrentCommentEl = function() {
 
 
 Main.prototype.scrollTo = function(el) {
+
+  if (!el.length) return;
 
   var that = this;
   var offTop = $(el).offset().top - this.toolBarHeight - 10;
