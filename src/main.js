@@ -253,7 +253,7 @@ Main.prototype.getCurrentCommentEl = function() {
 
 Main.prototype.scrollTo = function(el) {
 
-  if (!el.length) return;
+  if (!el) return;
 
   var that = this;
   var offTop = $(el).offset().top - this.toolBarHeight - 10;
