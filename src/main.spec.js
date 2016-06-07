@@ -1,24 +1,25 @@
-describe("JK chrome extension for Github", function () {
+describe("The main script", function () {
 
   files = $('<div id="files"></div>');
 
-  file1 = $('<div id="diff-0" class="file"><span class="user-select-contain" title="Gemfile">Gemfile</span></div>');
-  file2 = $('<div id="diff-1" class="file"><span class="user-select-contain" title="Gemfile.lock">Gemfile.lock</span></div>');
-  file3 = $('<div id="diff-2" class="file"><span class="user-select-contain" title="lib/Helper/Doc/Link.php">.ib/Helper/Doc/Link.php</span></div>');
-  file4 = $('<div id="diff-3" class="file"><span class="user-select-contain" title="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</span></div>');
-  file5 = $('<div id="diff-4" class="file"><span class="user-select-contain" title="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</span></div>');
-  file6 = $('<div id="diff-5" class="file"><span class="user-select-contain" title="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</span></div>');
-  file7 = $('<div id="diff-6" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</span></div>');
-  file8 = $('<div id="diff-7" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</span></div>');
-  file9 = $('<div id="diff-8" class="file"><span class="user-select-contain" title="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</span></div>');
-  file10 = $('<div id="diff-9" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
-  file11 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
-  file12 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
+  file0 = $('<div id="diff-0" class="file"><span class="user-select-contain" title="Gemfile">Gemfile</span></div>');
+  file1 = $('<div id="diff-1" class="file"><span class="user-select-contain" title="Gemfile.lock">Gemfile.lock</span></div>');
+  file2 = $('<div id="diff-2" class="file"><span class="user-select-contain" title="lib/Helper/Doc/Link.php">.ib/Helper/Doc/Link.php</span></div>');
+  file3 = $('<div id="diff-3" class="file"><span class="user-select-contain" title="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</span></div>');
+  file4 = $('<div id="diff-4" class="file"><span class="user-select-contain" title="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</span></div>');
+  file5 = $('<div id="diff-5" class="file"><span class="user-select-contain" title="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</span></div>');
+  file6 = $('<div id="diff-6" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</span></div>');
+  file7 = $('<div id="diff-7" class="file"><span class="user-select-contain" title="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</span></div>');
+  file8 = $('<div id="diff-8" class="file"><span class="user-select-contain" title="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</span></div>');
+  file9 = $('<div id="diff-9" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</span></div>');
+  file10 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
+  file11 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
   
   comment1 = $('<div class="comment js-comment">Comment!</div>');
-  file1.append(comment1);
+  file0.append(comment1);
   
   
+  files.append(file0);
   files.append(file1);
   files.append(file2);
   files.append(file3);
@@ -30,7 +31,6 @@ describe("JK chrome extension for Github", function () {
   files.append(file9);
   files.append(file10);
   files.append(file11);
-  files.append(file12);
 
   $(document.body).append(files);
 
@@ -42,17 +42,34 @@ describe("JK chrome extension for Github", function () {
 
   it('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
 
+    var currentFileId;
+
+    var file1Pos = {left: 8, right: 430, top: 1000, height: 32, bottom: 384, width: 422};
+    var file3Pos = {left: 8, right: 430, top: 2000, height: 32, bottom: 384, width: 422};
+
+    spyOn($('.file')[1], 'getBoundingClientRect').and.returnValue(file1Pos);
+    spyOn($('.file')[3], 'getBoundingClientRect').and.returnValue(file3Pos);
+
+    // Simulate that the scroll position of file3 is on top of the viewport.
+    file3Pos.top = 100;
+
     pressJ(main);
     pressJ(main);
     pressJ(main);
     pressJ(main);
 
-    expect(main.getCurrentEl()).toEqual(file4[0]);
+    currentFileId = $('#jk-hierarchy .current').data('file-id');
+    expect(currentFileId).toBe($(file3).attr('id'));
+
+    // Simulate that the scroll position of file1 is on top of the viewport.
+    file1Pos.top = 100;
+    file3Pos.top = 1000;
 
     pressK(main);
     pressK(main);
 
-    expect(main.getCurrentEl()).toEqual(file2[0]);
+    currentFileId = $('#jk-hierarchy .current').data('file-id');
+    expect(currentFileId).toBe($(file1).attr('id'));
 
   });
 
@@ -62,8 +79,9 @@ describe("JK chrome extension for Github", function () {
     var folders = $('#jk-hierarchy').find('.folder');
     expect(folders.length).toBe(8);
     
-    var files = $('#jk-hierarchy').find('.jk-file');
-    expect(files.length).toBe(12);
+    var filesInHierarchy = $('#jk-hierarchy').find('.jk-file');
+    var originalFiles = $('body .file');
+    expect(filesInHierarchy.length).toBe(originalFiles.length);
 
   });
   
@@ -98,6 +116,19 @@ describe("JK chrome extension for Github", function () {
 
   });
 
+  it('should properly regenerate the heirarchy', function () {
+    $('#jk-hierarchy').remove();
+  });
+
+
+});
+
+describe('The main script when no diffs found on page', function () {
+  
+  it('should not throw errors', function () {
+    main = new Main();
+    main.init();
+  });
 
 });
 

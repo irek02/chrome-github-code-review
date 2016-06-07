@@ -2,8 +2,6 @@ function Main() {
 }
 Main.prototype.init = function() {
 
-  this.cnt = 0;
-
   this.j_key = 74; // j key
   this.k_key = 75; // k key
 
@@ -24,6 +22,7 @@ Main.prototype.generateFileHierarchy = function() {
   this.currentPageUrl = window.location.href;
   this.currentFileId = null;
   this.currentCommentId = null;
+  this.cnt = 0;
 
   this.files = this.getFiles();
   this.toolBarHeight = $('.pr-toolbar').height();
@@ -40,7 +39,17 @@ Main.prototype.generateFileHierarchy = function() {
 
   this.appendCommentCounts();
 
-  $('#jk-hierarchy').css('width', $('#jk-hierarchy').width()*1.2);
+  $('#jk-hierarchy').css('width', $('#jk-hierarchy').width() * 1.2);
+  
+  // Add some bottom margin for the last diff so scrollTo can reach it in 
+  // case the diff is very small.
+  var lastDiff = $('.file')[$('.file').length - 1];
+  if (lastDiff && $(lastDiff).height() < $(window).height()) {
+    var newMargin = $(window).height() - $(lastDiff).height() - this.toolBarHeight - 100;
+    if (newMargin > 0) {
+      $(lastDiff).css('margin-bottom', newMargin);  
+    }
+  }
 
   $('#jk-hierarchy').find('.folder').click(function () {
     $header = $(this);
@@ -253,7 +262,7 @@ Main.prototype.getCurrentCommentEl = function() {
 
 Main.prototype.scrollTo = function(el) {
 
-  if (!el) return;
+  if (!$(el).length) return;
 
   var that = this;
   var offTop = $(el).offset().top - this.toolBarHeight - 10;
@@ -268,10 +277,10 @@ Main.prototype.updateCurentDiffPos = function() {
   
   if (!this.getFiles) return;
 
-  $.each(this.getFiles(), function(key, value) {    
-    var rect = value.getBoundingClientRect();
+  $.each(this.getFiles(), function(key, file) {    
+    var rect = file.getBoundingClientRect();
     if (rect.top < 139) {
-      id = $(value).attr("id");
+      id = $(file).attr("id");
     }
   });
 
