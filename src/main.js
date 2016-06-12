@@ -2,19 +2,43 @@ function Main() {
 }
 Main.prototype.init = function() {
 
-  this.j_key = 74; // j key
-  this.k_key = 75; // k key
+  this.diffNext = 74; // j key
+  this.diffPrev = 75; // k key
 
-  this.n_key = 78; // n key
-  this.p_key = 80; // p key
+  this.commentNext = 78; // n key
+  this.commentPrev = 80; // p key
 
-  this.z_key = 90; // z key
+  this.toggleSidebar = 90; // z key
+
+
+  if (typeof chrome != "undefined") {
+    var that = this;
+    chrome.storage.local.get("hotkeys", function(items){
+      that.updateHotkeys(items.hotkeys);
+    });
+
+
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+      if (changes.hasOwnProperty('hotkeys')) {        
+        that.updateHotkeys(changes.hotkeys.newValue);
+      }
+    });
+  }
+
 
   this.generateFileHierarchy();
 
   if (window == top) {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
   }
+};
+
+Main.prototype.updateHotkeys = function(hotkeys) {
+  this.diffNext = hotkeys.diffNext;
+  this.diffPrev = hotkeys.diffPrev;
+  this.commentNext = hotkeys.commentNext;
+  this.commentPrev = hotkeys.commentPrev;
+  this.toggleSidebar = hotkeys.toggleSidebar;
 };
 
 Main.prototype.generateFileHierarchy = function() {
@@ -124,19 +148,19 @@ Main.prototype.doKeyPress = function(e) {
     return;
   }
 
-  if (e.keyCode == this.j_key || e.keyCode == this.k_key) {
+  if (e.keyCode == this.diffNext || e.keyCode == this.diffPrev) {
     this.updateCurrentPos(e.keyCode);
     var el = this.getCurrentEl();
     this.scrollTo(el);
   }
 
-  if (e.keyCode == this.n_key || e.keyCode == this.p_key) {
+  if (e.keyCode == this.commentNext || e.keyCode == this.commentPrev) {
     this.updateCurrentCommentPos(e.keyCode);
     var el = this.getCurrentCommentEl();
     this.scrollTo(el);
   }
 
-  if (e.keyCode == this.z_key) {
+  if (e.keyCode == this.toggleSidebar) {
     if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy') && $('#jk-hierarchy')[0].innerHTML)) {
       $('#jk-hierarchy').remove();
       this.generateFileHierarchy();
@@ -170,7 +194,7 @@ Main.prototype.addProp = function(res, arr) {
 
   if (arr.length > 1) {
     var prop = arr.splice(0,1);
-    
+
     if (!res.hasOwnProperty(prop)) {
       res[prop] = {};  
     }
@@ -233,10 +257,10 @@ Main.prototype.updateCurrentPos = function(keyCode) {
   if (this.currentFileId == null) {
     this.currentFileId = 0;
   }
-  else if (this.currentFileId < this.files.length - 1 && keyCode == this.j_key) {
+  else if (this.currentFileId < this.files.length - 1 && keyCode == this.diffNext) {
    this.currentFileId++; 
   }
-  else if (this.currentFileId > 0 && keyCode == this.k_key) {
+  else if (this.currentFileId > 0 && keyCode == this.diffPrev) {
    this.currentFileId--; 
   }
 };
@@ -246,10 +270,10 @@ Main.prototype.updateCurrentCommentPos = function(keyCode) {
   if (this.currentCommentId == null) {
     this.currentCommentId = 0;
   }
-  else if (this.currentCommentId < this.getComments().length - 1 && keyCode == this.n_key) {
+  else if (this.currentCommentId < this.getComments().length - 1 && keyCode == this.commentNext) {
    this.currentCommentId++; 
   }
-  else if (this.currentCommentId > 0 && keyCode == this.p_key) {
+  else if (this.currentCommentId > 0 && keyCode == this.commentPrev) {
    this.currentCommentId--; 
   }
 };

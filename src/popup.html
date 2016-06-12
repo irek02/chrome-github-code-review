@@ -7,17 +7,50 @@
         font-size: 100%;
         width: 500px;
       }
+      .hotkeys li {
+        margin-bottom: 10px;
+      }
+      .btn {
+        cursor: pointer;
+        padding: 3px 5px;
+        font: 15px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        color: #555;
+        vertical-align: middle;
+        background-color: #fcfcfc;
+        border: solid 1px #ccc;
+        border-bottom-color: #bbb;
+        border-radius: 3px;
+        box-shadow: inset 0 -1px 0 #bbb;
+      }
+      .btn:active {
+        background-color: #9F9E9E;
+      }
     </style>
+    <script src="../lib/jquery-1.12.3.min.js"></script>
+    <script src="popup.js"></script>
   </head>
   <body>
     <h3>Enhanced code reviews for GitHub</h3>
-    <p>Visit a pull request page on GitHub (files section) and use the following hot keys</p>
-    <ul>
-      <li>z: toggle the sidebar</li>
-      <li>j/k: jump between files</li>
-      <li>n/p: jump between comments</li>
+    <p>Visit a pull request page on GitHub (files section) and use the following hotkeys:</p>
+
+    <ul class="hotkeys">
+      <li>
+        <span class="btn" data-hotkey="toggleSidebar"></span> toggle sidebar
+      </li>
+      <li>
+        <span class="btn" data-hotkey="diffNext"></span> / <span class="btn" data-hotkey="diffPrev"></span> jump between files
+      </li>
+      <li>
+        <span class="btn" data-hotkey="commentNext"></span> / <span class="btn" data-hotkey="commentPrev"></span> jump between comments
+      </li>
     </ul>
-    <a href="https://github.com/irek02/chrome-github-code-review" target=_blank>https://github.com/irek02/chrome-github-code-review</a>
+
+    <span id="restore" class="btn" style="float:right;">Restore default hotkeys</span>
+    <br><br><br>
+
+    <div>
+      <a href="https://github.com/irek02/chrome-github-code-review" target=_blank>https://github.com/irek02/chrome-github-code-review</a>
+    </div>
   </body>
 </html>
 
