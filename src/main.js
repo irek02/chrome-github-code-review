@@ -64,6 +64,7 @@ Main.prototype.generateFileHierarchy = function() {
   this.appendCommentCounts();
 
   $('#jk-hierarchy').css('width', $('#jk-hierarchy').width() * 1.2);
+  $('#jk-hierarchy').css("background-color", $('body').css('background-color'));
   
   // Add some bottom margin for the last diff so scrollTo can reach it in 
   // case the diff is very small.
