@@ -14,17 +14,17 @@ Main.prototype.init = function() {
   if (typeof chrome != "undefined") {
     var that = this;
     chrome.storage.local.get("hotkeys", function(items){
-      that.updateHotkeys(items.hotkeys);
+      if (items.hasOwnProperty('hotkeys')) {
+        that.updateHotkeys(items.hotkeys);
+      }
     });
 
-
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if (changes.hasOwnProperty('hotkeys')) {        
+      if (changes.hasOwnProperty('hotkeys')) {
         that.updateHotkeys(changes.hotkeys.newValue);
       }
     });
   }
-
 
   this.generateFileHierarchy();
 
@@ -341,5 +341,5 @@ Main.prototype.getFiles = function() {
 
 
 Main.prototype.getComments = function() {
-  return $('.main-content .timeline-comment');
+  return $('#files .timeline-comment');
 };
