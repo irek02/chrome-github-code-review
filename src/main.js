@@ -10,9 +10,13 @@ Main.prototype.init = function() {
 
   this.toggleSidebar = 90; // z key
 
+  this.hiddenSidebarUrls = [];
+  this.pageLoadWaitTimeout = 1000; // 1 sec
+
+  var that = this;
 
   if (typeof chrome != "undefined") {
-    var that = this;
+    
     chrome.storage.local.get("hotkeys", function(items){
       if (items.hasOwnProperty('hotkeys')) {
         that.updateHotkeys(items.hotkeys);
@@ -30,6 +34,7 @@ Main.prototype.init = function() {
 
   if (window == top) {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
+    setInterval(this.monitorUrlChange.bind(this), 100);
   }
 };
 
@@ -58,6 +63,10 @@ Main.prototype.generateFileHierarchy = function() {
   this.generateFileHierarchyHtml(hierarchy, compressedStructure);
 
   $("body").prepend(hierarchy);
+
+  if (Object.keys(compressedStructure).length == 0) {
+    $('#jk-hierarchy').hide();
+  }
 
   this.updateCurentDiffPos();
 
@@ -162,12 +171,28 @@ Main.prototype.doKeyPress = function(e) {
   }
 
   if (e.keyCode == this.toggleSidebar) {
-    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy') && $('#jk-hierarchy')[0].innerHTML)) {
+    
+    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy').length && $('#jk-hierarchy')[0].innerHTML)) {
       $('#jk-hierarchy').remove();
       this.generateFileHierarchy();
-      $('#jk-hierarchy').slideToggle(10);
+      $('#jk-hierarchy').toggle();
     }
-    $('#jk-hierarchy').slideToggle(10);
+    
+    $('#jk-hierarchy').toggle();
+
+    // If sidebar hidden, remember the current URL and don't re-display
+    // it until user toggles it back up. 
+    if ($('#jk-hierarchy').is(":visible") == false) {
+      this.hiddenSidebarUrls.push(this.currentPageUrl);
+    }
+    // Otherwise remove the current URL from the list
+    else {
+      var index = this.hiddenSidebarUrls.indexOf(this.currentPageUrl);
+      if (index > -1) {
+        this.hiddenSidebarUrls.splice(index, 1);
+      }
+    }
+    
   }
   
 };
@@ -343,4 +368,33 @@ Main.prototype.getFiles = function() {
 
 Main.prototype.getComments = function() {
   return $('#files .timeline-comment');
+};
+
+Main.prototype.monitorUrlChange = function() {
+  // If URL changed, remove the sidebar, wait a bit and re-generate it
+  if (!this.isSameUrl()) {
+    this.currentPageUrl = this.getWindowLocationHref();
+    $('#jk-hierarchy').remove();
+
+    var that = this;
+    setTimeout(function() {
+      if (!that.isSidebarHiddenOnCurrentPage() && that.isSameUrl()) {
+        that.generateFileHierarchy();
+      }
+    }, this.pageLoadWaitTimeout);
+
+  }
+  
+};
+
+Main.prototype.isSameUrl = function() {
+  return this.currentPageUrl == window.location.href;
+};
+
+Main.prototype.getWindowLocationHref = function() {
+  return window.location.href;
+};
+
+Main.prototype.isSidebarHiddenOnCurrentPage = function() {
+  return $.inArray(this.currentPageUrl, this.hiddenSidebarUrls) != -1;
 };

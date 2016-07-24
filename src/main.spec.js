@@ -32,11 +32,14 @@ describe("The main script", function () {
   files.append(file10);
   files.append(file11);
 
-  $(document.body).append(files);
-
   beforeEach(function() {
+    $(document.body).append(files);
     main = new Main();
     main.init();
+  });
+
+  afterEach(function() {
+    $(document.body).html("");
   });
 
 
@@ -70,6 +73,49 @@ describe("The main script", function () {
 
     currentFileId = $('#jk-hierarchy .current').data('file-id');
     expect(currentFileId).toBe($(file1).attr('id'));
+
+  });
+
+  it('should toggle the sidebar when pressing z key', function () {
+    expect($('#jk-hierarchy').is(":visible")).toBe(true);
+    
+    pressZ(main);
+    expect($('#jk-hierarchy').is(":visible")).toBe(false);
+    
+    pressZ(main);
+    expect($('#jk-hierarchy').is(":visible")).toBe(true)
+  });
+
+
+  it('should toggle the sidebar after coming back from a different URL', function () {
+  
+    // spyOn(main, 'getWindowLocationHref').and.returnValues('foo1', 'foo1', window.location.href);
+
+    // main.pageLoadWaitTimeout = 0;
+
+    // expect($('#jk-hierarchy').is(":visible")).toBe(true);
+    
+    // pressZ(main);
+    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
+
+    // var originalUrl = window.location.href;
+    
+    // // Navigating away, the sidebar disappear, no diffs on the page - 
+    // // sidebar remains hidden
+    // $('#files').remove();
+    // main.monitorUrlChange();
+    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
+
+    // // Coming back, sidebar hidden because we toggled it previously
+    // $(document.body).append(files);
+    // main.monitorUrlChange();
+    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
+
+    // // Toggle the sidebar, it should appear
+    // pressZ(main);
+    // expect($('#jk-hierarchy').is(":visible")).toBe(true);
+
+    
 
   });
 
@@ -130,6 +176,18 @@ describe('The main script when no diffs found on page', function () {
     main.init();
   });
 
+  it('should not display the sidebar', function () {
+    main = new Main();
+    main.init();
+
+    expect($('#jk-hierarchy').is(":visible")).toBe(false);
+
+  });
+
+  it('does not trigger error when toggling the sidebar', function () {
+    pressZ(main);
+  });
+
 });
 
 function pressJ (main) {
@@ -138,4 +196,8 @@ function pressJ (main) {
 
 function pressK (main) {
   main.doKeyPress({ keyCode: 75 });
+}
+
+function pressZ (main) {
+  main.doKeyPress({ keyCode: 90 });
 }
