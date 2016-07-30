@@ -45,6 +45,9 @@ describe("The main script", function () {
 
   it('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
 
+    // Pop open the sidebar.
+    pressZ(main);
+
     var currentFileId;
 
     var file1Pos = {left: 8, right: 430, top: 1000, height: 32, bottom: 384, width: 422};
@@ -77,48 +80,14 @@ describe("The main script", function () {
   });
 
   it('should toggle the sidebar when pressing z key', function () {
+    expect($('#jk-hierarchy').is(":visible")).toBe(false);
+    
+    pressZ(main);
     expect($('#jk-hierarchy').is(":visible")).toBe(true);
     
     pressZ(main);
     expect($('#jk-hierarchy').is(":visible")).toBe(false);
-    
-    pressZ(main);
-    expect($('#jk-hierarchy').is(":visible")).toBe(true)
   });
-
-
-  it('should toggle the sidebar after coming back from a different URL', function () {
-  
-    // spyOn(main, 'getWindowLocationHref').and.returnValues('foo1', 'foo1', window.location.href);
-
-    // main.pageLoadWaitTimeout = 0;
-
-    // expect($('#jk-hierarchy').is(":visible")).toBe(true);
-    
-    // pressZ(main);
-    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
-
-    // var originalUrl = window.location.href;
-    
-    // // Navigating away, the sidebar disappear, no diffs on the page - 
-    // // sidebar remains hidden
-    // $('#files').remove();
-    // main.monitorUrlChange();
-    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
-
-    // // Coming back, sidebar hidden because we toggled it previously
-    // $(document.body).append(files);
-    // main.monitorUrlChange();
-    // expect($('#jk-hierarchy').is(":visible")).toBe(false);
-
-    // // Toggle the sidebar, it should appear
-    // pressZ(main);
-    // expect($('#jk-hierarchy').is(":visible")).toBe(true);
-
-    
-
-  });
-
 
   it('should generate a file hirarchy with an expected number of folders and files', function () {
 

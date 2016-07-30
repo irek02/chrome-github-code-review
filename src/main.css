@@ -38,3 +38,13 @@
 #jk-hierarchy ul li.folder.collapsed {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/alpha__folder.svg');
 }
+
+#jk-notice {
+  display: none;
+  position: fixed;
+  font-size: 5em;
+  left: 30%;
+  top: 20%;
+  z-index: 100;
+  padding: 10px 20px;
+}

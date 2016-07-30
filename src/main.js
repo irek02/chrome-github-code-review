@@ -13,6 +13,10 @@ Main.prototype.init = function() {
   this.hiddenSidebarUrls = [];
   this.pageLoadWaitTimeout = 1000; // 1 sec
 
+  // Add the notice
+  $("body").prepend('<div id="jk-notice">No diffs found</div>');
+  $('#jk-notice').css("background-color", $('body').css('background-color'));
+
   var that = this;
 
   if (typeof chrome != "undefined") {
@@ -48,7 +52,7 @@ Main.prototype.updateHotkeys = function(hotkeys) {
 
 Main.prototype.generateFileHierarchy = function() {
 
-  this.currentPageUrl = window.location.href;
+  this.currentPageUrl = this.getWindowLocationHref();
   this.currentFileId = null;
   this.currentCommentId = null;
   this.cnt = 0;
@@ -64,16 +68,13 @@ Main.prototype.generateFileHierarchy = function() {
 
   $("body").prepend(hierarchy);
 
-  if (Object.keys(compressedStructure).length == 0) {
-    $('#jk-hierarchy').hide();
-  }
-
   this.updateCurentDiffPos();
-
   this.appendCommentCounts();
 
   $('#jk-hierarchy').css('width', $('#jk-hierarchy').width() * 1.2);
   $('#jk-hierarchy').css("background-color", $('body').css('background-color'));
+  // Hide the sidebar by default.
+  $('#jk-hierarchy').hide();
   
   // Add some bottom margin for the last diff so scrollTo can reach it in 
   // case the diff is very small.
@@ -153,6 +154,7 @@ Main.prototype.generateFileHierarchyHtml = function(hierarchy, structure) {
 
 Main.prototype.doKeyPress = function(e) {
 
+  // Do not react on key press if user is typing text.
   var clickedTarget = $(e.target).prop("tagName");
   if (clickedTarget != 'BODY' && clickedTarget != undefined) {
     return;
@@ -172,25 +174,17 @@ Main.prototype.doKeyPress = function(e) {
 
   if (e.keyCode == this.toggleSidebar) {
     
-    if (this.currentPageUrl != window.location.href || !($('#jk-hierarchy').length && $('#jk-hierarchy')[0].innerHTML)) {
+    // If the sidebar does not exist, re-generate it.
+    if (!this.isSidebarHaveContents()) {
       $('#jk-hierarchy').remove();
       this.generateFileHierarchy();
-      $('#jk-hierarchy').toggle();
     }
     
-    $('#jk-hierarchy').toggle();
-
-    // If sidebar hidden, remember the current URL and don't re-display
-    // it until user toggles it back up. 
-    if ($('#jk-hierarchy').is(":visible") == false) {
-      this.hiddenSidebarUrls.push(this.currentPageUrl);
+    if (this.isSidebarHaveContents()) {
+      $('#jk-hierarchy').toggle();  
     }
-    // Otherwise remove the current URL from the list
     else {
-      var index = this.hiddenSidebarUrls.indexOf(this.currentPageUrl);
-      if (index > -1) {
-        this.hiddenSidebarUrls.splice(index, 1);
-      }
+      $("#jk-notice").show().delay(600).fadeOut(600);
     }
     
   }
@@ -371,30 +365,26 @@ Main.prototype.getComments = function() {
 };
 
 Main.prototype.monitorUrlChange = function() {
-  // If URL changed, remove the sidebar, wait a bit and re-generate it
+  // If URL changed, remove the sidebar.
   if (!this.isSameUrl()) {
     this.currentPageUrl = this.getWindowLocationHref();
     $('#jk-hierarchy').remove();
-
-    var that = this;
-    setTimeout(function() {
-      if (!that.isSidebarHiddenOnCurrentPage() && that.isSameUrl()) {
-        that.generateFileHierarchy();
-      }
-    }, this.pageLoadWaitTimeout);
-
   }
   
 };
 
 Main.prototype.isSameUrl = function() {
-  return this.currentPageUrl == window.location.href;
+  return this.currentPageUrl == this.getWindowLocationHref();
 };
 
 Main.prototype.getWindowLocationHref = function() {
-  return window.location.href;
+  return window.location.href.split("#")[0];
 };
 
 Main.prototype.isSidebarHiddenOnCurrentPage = function() {
   return $.inArray(this.currentPageUrl, this.hiddenSidebarUrls) != -1;
+};
+
+Main.prototype.isSidebarHaveContents = function() {
+  return $('#jk-hierarchy').length && $('#jk-hierarchy')[0].innerHTML;
 };
