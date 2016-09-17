@@ -15,7 +15,7 @@ describe("The main script", function () {
   file10 = $('<div id="diff-10" class="file"><span class="user-select-contain" title="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</span></div>');
   file11 = $('<div id="diff-11" class="file"><span class="user-select-contain" title="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</span></div>');
   
-  comment1 = $('<div class="comment js-comment">Comment!</div>');
+  comment1 = $('<div class="js-comment">Comment!</div>');
   file0.append(comment1);
   
   
@@ -116,33 +116,36 @@ describe("The main script", function () {
   
   it('should count number of comments per file', function () {
     
-    var generatedFiles = $('#jk-hierarchy').find('.jk-file');
-    var existingFiles = $('.file');
-
-    $.each(generatedFiles, function (key, generatedFile) {
-      comments = $(existingFiles[key]).find('.comment.js-comment');
-
-      if (comments.length) {
-        var commentCntStr = '(' + comments.length + ')';
-        expect($(generatedFile).find('.comment-count').text()).toContain(commentCntStr);
-      }
-
-    });
+    var commentCountStr = $('#jk-hierarchy')
+      .find('.jk-file[data-file-id="diff-0"]')
+      .find('.comment-count')
+      .text();
+    
+    expect(commentCountStr).toContain("(1)");
 
   });
 
   it('should properly regenerate the heirarchy', function () {
+
     $('#jk-hierarchy').remove();
+    
   });
 
+  it('should correctly identify a total number of comments', function () {
+
+    expect(main.getComments().length).toBe(1);
+    
+  });
 
 });
 
 describe('The main script when no diffs found on page', function () {
   
   it('should not throw errors', function () {
+
     main = new Main();
     main.init();
+
   });
 
   it('should not display the sidebar', function () {
@@ -154,7 +157,9 @@ describe('The main script when no diffs found on page', function () {
   });
 
   it('does not trigger error when toggling the sidebar', function () {
+    
     pressZ(main);
+
   });
 
 });

@@ -110,7 +110,7 @@ Main.prototype.appendCommentCounts = function() {
 
     var fileId = $(item).data('file-id');
 
-    var comments = $('#' + fileId).find('.comment.js-comment');
+    var comments = $('#' + fileId).find('.js-comment');
     if (comments.length) {
       var count = $('<span class="comment-count"> (' + comments.length + ')</span>');
       $(item).append(count);
@@ -361,7 +361,7 @@ Main.prototype.getFiles = function() {
 
 
 Main.prototype.getComments = function() {
-  return $('#files .timeline-comment');
+  return $('#files .js-comment');
 };
 
 Main.prototype.monitorUrlChange = function() {
