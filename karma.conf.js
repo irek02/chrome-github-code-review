@@ -17,7 +17,8 @@ module.exports = function(config) {
     files: [
       'lib/jquery-1.12.3.min.js',
       'src/main.spec.js',
-      'src/main.js'
+      'src/main.js',
+      'src/main/*.js'
     ],
 
 

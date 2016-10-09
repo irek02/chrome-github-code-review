@@ -18,6 +18,7 @@
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "requirejs": "^2.2.0",
+    "uglify-js": "^2.7.3",
     "zip-folder": "^1.0.0"
   },
   "scripts": {

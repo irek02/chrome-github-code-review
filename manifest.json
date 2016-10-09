@@ -17,7 +17,7 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],
-      "js": ["lib/jquery-1.12.3.min.js", "src/main.js", "src/chrome-ext-init.js"],
+      "js": ["lib/jquery-1.12.3.min.js", "src/main.min.js", "src/chrome-ext-init.js"],
       "css": ["src/main.css"]
     }
   ],
