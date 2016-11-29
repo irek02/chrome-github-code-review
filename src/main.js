@@ -5,6 +5,7 @@ Main.prototype.init = function() {
 
   this.hiddenSidebarUrls = [];
   this.pageLoadWaitTimeout = 1000; // 1 sec
+  this.initialNumberOfFiles = 0;
 
   this.hotKeysService = new HotKeysService();
 
@@ -14,12 +15,17 @@ Main.prototype.init = function() {
     window.addEventListener('keyup', this.doKeyPress.bind(this), false);
     setInterval(this.monitorUrlChange.bind(this), 100);
   }
+
+  setInterval(this.monitorLazyLoading.bind(this), 100);
+
 };
 
 Main.prototype.generateApp = function() {
 
   this.currentPageUrl = this.getWindowLocationHref();
   this.toolBarHeight = $('.pr-toolbar').height();
+
+  this.initialNumberOfFiles = $('.file').length;  
 
   var files = [];
   $.each($('.file'), function (index, item) {
@@ -82,3 +88,11 @@ Main.prototype.isSameUrl = function() {
 Main.prototype.getWindowLocationHref = function() {
   return window.location.href.split("#")[0];
 };
+
+Main.prototype.monitorLazyLoading = function() {
+  if (this.initialNumberOfFiles != $('.file').length) {
+    $('#jk-hierarchy').remove();
+    this.generateApp();
+  }
+};
+

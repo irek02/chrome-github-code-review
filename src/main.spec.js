@@ -33,12 +33,15 @@ describe("The main script", function () {
   files.append(file11);
 
   beforeEach(function() {
+    jasmine.clock().install();
+    
     $(document.body).append(files);
     main = new Main();
     main.init();
   });
 
   afterEach(function() {
+    jasmine.clock().uninstall();
     $(document.body).html("");
   });
 
@@ -139,9 +142,26 @@ describe("The main script", function () {
     
   });
 
-  it('test', function () {
-    // var t = new TestClass();
-    // t.init();
+  it('should update the hierarchy when new diffs are lazy-loaded', function () {
+
+    spyOn(main, 'generateApp').and.callThrough();
+  
+    // The following simulates the lazy loaded additional files.
+    var new_file = $('<div id="diff-99" class="file"><div class="file-header" data-path="tests/Application/Access/UserAccessTest2.php">tests/Application/Access/UserAccessTest2.php</div></div>');
+  
+    $('#files').append(new_file);
+
+    // After couple of seconds the sidebar gets regenerated (only 1 time!).
+    jasmine.clock().tick(2000);    
+    
+    expect(main.generateApp.calls.count()).toBe(1);
+
+    var filesInHierarchy = $('#jk-hierarchy').find('.jk-file');
+    var originalFiles = $('body .file');
+
+    // And the regenerated hierarchy contains the lazy loaded file.
+    expect(filesInHierarchy.length).toBe(originalFiles.length);
+ 
   });
 
 });
