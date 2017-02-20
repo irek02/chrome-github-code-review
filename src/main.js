@@ -45,7 +45,6 @@ Main.prototype.generateApp = function() {
   var decorationService = new DecorationService(hierarchy);
   decorationService.applyInitStyle();
   decorationService.appendCommentCounts();
-  decorationService.adjustBottomFileHeight(this.toolBarHeight);
   decorationService.appendNoDiffMessage();
 
   var appInteractionService = new AppInteractionService(this.toolBarHeight, this.hotKeysService, this);
