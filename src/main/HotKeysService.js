@@ -11,13 +11,13 @@ function HotKeysService() {
 
   if (typeof chrome != "undefined") {
     
-    chrome.storage.local.get("hotkeys", function(items){
+    chrome.storage.local.get("hotkeys", function (items){
       if (items.hasOwnProperty('hotkeys')) {
         that.updateHotkeys(items.hotkeys);
       }
     });
 
-    chrome.storage.onChanged.addListener(function(changes, namespace) {
+    chrome.storage.onChanged.addListener(function (changes, namespace) {
       if (changes.hasOwnProperty('hotkeys')) {
         that.updateHotkeys(changes.hotkeys.newValue);
       }
@@ -26,7 +26,7 @@ function HotKeysService() {
 
 };
 
-HotKeysService.prototype.updateHotkeys = function(hotkeys) {
+HotKeysService.prototype.updateHotkeys = function (hotkeys) {
   this.diffNext = hotkeys.diffNext;
   this.diffPrev = hotkeys.diffPrev;
   this.commentNext = hotkeys.commentNext;
@@ -55,15 +55,15 @@ HotKeysService.prototype.getKeyCodeForToggleSidebar = function () {
 }
 
 HotKeysService.prototype.isValidKeyCodeForDiff = function (keyCode) {
-  return keyCode == this.getKeyCodeForNextDiff() || keyCode == this.getKeyCodeForPrevDiff();
+  return keyCode === this.getKeyCodeForNextDiff() || keyCode === this.getKeyCodeForPrevDiff();
 }
 
 HotKeysService.prototype.isValidKeyCodeForComment = function (keyCode) {
-  return keyCode == this.getKeyCodeForNextComment() || keyCode == this.getKeyCodeForPrevComment();
+  return keyCode === this.getKeyCodeForNextComment() || keyCode === this.getKeyCodeForPrevComment();
 }
 
 HotKeysService.prototype.isValidKeyCodeForSideBarToggle = function (keyCode) {
-  return keyCode == this.getKeyCodeForToggleSidebar();
+  return keyCode === this.getKeyCodeForToggleSidebar();
 }
 
 HotKeysService.prototype.isValidKeyCode = function (keyCode) {

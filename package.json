@@ -19,11 +19,14 @@
     "ncp": "^2.0.0",
     "requirejs": "^2.2.0",
     "uglify-js": "^2.7.3",
+    "watch": "^1.0.2",
     "zip-folder": "^1.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
-    "build": "node build.js"
+    "lint": "jslint ./src/main/*",
+    "test": "karma start --single-run",
+    "build": "node ./build.js",
+    "build:watch": "watch 'npm run lint; npm run test && npm run build' ./src/main"
   },
   "author": "Irek Mirgaleev",
   "repository": "https://github.com/irek02/chrome-github-code-review",

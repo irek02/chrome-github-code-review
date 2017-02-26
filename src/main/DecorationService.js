@@ -9,9 +9,9 @@ DecorationService.prototype.applyInitStyle = function () {
   $(this.element).hide();
 };
 
-DecorationService.prototype.appendCommentCounts = function() {
+DecorationService.prototype.appendCommentCounts = function () {
   var files = $('#jk-hierarchy').find('.jk-file');
-  $.each(files, function(key, item) {
+  $.each(files, function (key, item) {
 
     var fileId = $(item).data('file-id');
 
@@ -24,7 +24,7 @@ DecorationService.prototype.appendCommentCounts = function() {
   });
 };
 
-DecorationService.prototype.appendNoDiffMessage = function() {
+DecorationService.prototype.appendNoDiffMessage = function () {
 
   if ($('#jk-notice').length) return; 
 

@@ -41,6 +41,10 @@ async.series([
 	},
 	function (callback) {
 		rimraf('dist', [], callback);
+	},
+	function (callback) {
+		console.log('Build completed;');
 	}
+
 ]);
 
