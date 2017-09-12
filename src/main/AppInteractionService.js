@@ -41,7 +41,7 @@ AppInteractionService.prototype.scrollTo = function(element) {
 
   var offTop = $(element).offset().top - this.toolBarHeight - 10;
   
-  $('body').scrollTop(offTop);
+  $('html,body').scrollTop(offTop);
   this.updateCurentDiffPos();
   
 };
