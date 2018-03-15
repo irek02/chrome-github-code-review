@@ -14,11 +14,11 @@ describe("The main script", function () {
   file9 = $('<div id="diff-9" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</div></div>');
   file10 = $('<div id="diff-10" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</div></div>');
   file11 = $('<div id="diff-11" class="file"><div class="file-header" data-path="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</div></div>');
-  
-  comment1 = $('<div class="js-comment">Comment!</div>');
+
+  comment1 = $('<div class="js-comment unminimized-comment">Comment!</div>');
   file0.append(comment1);
-  
-  
+
+
   files.append(file0);
   files.append(file1);
   files.append(file2);
@@ -32,15 +32,15 @@ describe("The main script", function () {
   files.append(file10);
   files.append(file11);
 
-  beforeEach(function() {
+  beforeEach(function () {
     jasmine.clock().install();
-    
+
     $(document.body).append(files);
     main = new Main();
     main.init();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.clock().uninstall();
     $(document.body).html("");
   });
@@ -53,8 +53,8 @@ describe("The main script", function () {
 
     var currentFileId;
 
-    var file1Pos = {left: 8, right: 430, top: 1000, height: 32, bottom: 384, width: 422};
-    var file3Pos = {left: 8, right: 430, top: 2000, height: 32, bottom: 384, width: 422};
+    var file1Pos = { left: 8, right: 430, top: 1000, height: 32, bottom: 384, width: 422 };
+    var file3Pos = { left: 8, right: 430, top: 2000, height: 32, bottom: 384, width: 422 };
 
     spyOn($('.file')[1], 'getBoundingClientRect').and.returnValue(file1Pos);
     spyOn($('.file')[3], 'getBoundingClientRect').and.returnValue(file3Pos);
@@ -84,10 +84,10 @@ describe("The main script", function () {
 
   it('should toggle the sidebar when pressing z key', function () {
     expect($('#jk-hierarchy').is(":visible")).toBe(false);
-    
+
     pressZ(main);
     expect($('#jk-hierarchy').is(":visible")).toBe(true);
-    
+
     pressZ(main);
     expect($('#jk-hierarchy').is(":visible")).toBe(false);
   });
@@ -96,16 +96,16 @@ describe("The main script", function () {
 
     var folders = $('#jk-hierarchy').find('.folder');
     expect(folders.length).toBe(8);
-    
+
     var filesInHierarchy = $('#jk-hierarchy').find('.jk-file');
     var originalFiles = $('body .file');
     expect(filesInHierarchy.length).toBe(originalFiles.length);
 
   });
-  
-  
+
+
   it('should generate a file hirarchy with files in proper order', function () {
-    
+
     var generatedFiles = $('#jk-hierarchy').find('.jk-file');
     var existingFiles = $('.file');
 
@@ -115,15 +115,15 @@ describe("The main script", function () {
     });
 
   });
-  
-  
+
+
   it('should count number of comments per file', function () {
-    
+
     var commentCountStr = $('#jk-hierarchy')
       .find('.jk-file[data-file-id="diff-0"]')
       .find('.comment-count')
       .text();
-    
+
     expect(commentCountStr).toContain("(1)");
 
   });
@@ -131,7 +131,7 @@ describe("The main script", function () {
   it('should properly regenerate the heirarchy', function () {
 
     $('#jk-hierarchy').remove();
-    
+
   });
 
   it('should correctly identify a total number of comments', function () {
@@ -139,21 +139,21 @@ describe("The main script", function () {
     var appInteractionService = new AppInteractionService(null);
 
     expect(appInteractionService.getComments().length).toBe(1);
-    
+
   });
 
   it('should update the hierarchy when new diffs are lazy-loaded', function () {
 
     spyOn(main, 'generateApp').and.callThrough();
-  
+
     // The following simulates the lazy loaded additional files.
     var new_file = $('<div id="diff-99" class="file"><div class="file-header" data-path="tests/Application/Access/UserAccessTest2.php">tests/Application/Access/UserAccessTest2.php</div></div>');
-  
+
     $('#files').append(new_file);
 
     // After couple of seconds the sidebar gets regenerated (only 1 time!).
-    jasmine.clock().tick(2000);    
-    
+    jasmine.clock().tick(2000);
+
     expect(main.generateApp.calls.count()).toBe(1);
 
     var filesInHierarchy = $('#jk-hierarchy').find('.jk-file');
@@ -161,13 +161,13 @@ describe("The main script", function () {
 
     // And the regenerated hierarchy contains the lazy loaded file.
     expect(filesInHierarchy.length).toBe(originalFiles.length);
- 
+
   });
 
 });
 
 describe('The main script when no diffs found on page', function () {
-  
+
   it('should not throw errors', function () {
 
     main = new Main();
@@ -184,21 +184,21 @@ describe('The main script when no diffs found on page', function () {
   });
 
   it('does not trigger error when toggling the sidebar', function () {
-    
+
     pressZ(main);
 
   });
 
 });
 
-function pressJ (main) {
+function pressJ(main) {
   main.doKeyPress({ keyCode: 74 });
 }
 
-function pressK (main) {
+function pressK(main) {
   main.doKeyPress({ keyCode: 75 });
 }
 
-function pressZ (main) {
+function pressZ(main) {
   main.doKeyPress({ keyCode: 90 });
 }

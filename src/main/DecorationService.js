@@ -9,13 +9,13 @@ DecorationService.prototype.applyInitStyle = function () {
   $(this.element).hide();
 };
 
-DecorationService.prototype.appendCommentCounts = function() {
+DecorationService.prototype.appendCommentCounts = function () {
   var files = $('#jk-hierarchy').find('.jk-file');
-  $.each(files, function(key, item) {
+  $.each(files, function (key, item) {
 
     var fileId = $(item).data('file-id');
 
-    var comments = $('#' + fileId).find('.js-comment');
+    var comments = $('#' + fileId).find('.js-comment.unminimized-comment');
     if (comments.length) {
       var count = $('<span class="comment-count"> (' + comments.length + ')</span>');
       $(item).append(count);
@@ -24,9 +24,9 @@ DecorationService.prototype.appendCommentCounts = function() {
   });
 };
 
-DecorationService.prototype.appendNoDiffMessage = function() {
+DecorationService.prototype.appendNoDiffMessage = function () {
 
-  if ($('#jk-notice').length) return; 
+  if ($('#jk-notice').length) return;
 
   $("body").prepend('<div id="jk-notice">No diffs found</div>');
   $('#jk-notice').css("background-color", $('body').css('background-color'));
