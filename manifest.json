@@ -1,10 +1,8 @@
 {
   "manifest_version": 2,
-
   "name": "GitHub code review",
   "description": "This extension adds hot keys and hierarchical file view to GitHub pull request pages.",
-  "version": "1.1.1",
-
+  "version": "1.1.16",
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_popup": "src/popup.html"
@@ -16,9 +14,17 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://github.com/*"],
-      "js": ["lib/jquery-1.12.3.min.js", "src/main.min.js", "src/chrome-ext-init.js"],
-      "css": ["src/main.css"]
+      "matches": [
+        "https://github.com/*"
+      ],
+      "js": [
+        "lib/jquery-1.12.3.min.js",
+        "src/main.min.js",
+        "src/chrome-ext-init.js"
+      ],
+      "css": [
+        "src/main.css"
+      ]
     }
   ],
   "web_accessible_resources": [
