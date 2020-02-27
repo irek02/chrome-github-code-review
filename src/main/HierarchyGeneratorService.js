@@ -13,7 +13,7 @@ HierarchyGeneratorService.prototype.generateAndApplyHierarchyHtml = function(fil
 };
 
 HierarchyGeneratorService.prototype.getCompressedHierarchy = function() {
-  
+
   var structure = this.getHierarchyStructure(this.files);
   return this.compressHierarchy(structure);
 
@@ -42,7 +42,7 @@ HierarchyGeneratorService.prototype.addProp = function(res, arr) {
     var prop = arr.splice(0,1);
 
     if (!res.hasOwnProperty(prop)) {
-      res[prop] = {};  
+      res[prop] = {};
     }
 
     this.addProp(res[prop], arr);
@@ -66,7 +66,7 @@ HierarchyGeneratorService.prototype.compressHierarchy = function(hierarchy) {
       }
 
       if (typeof obj[key] == 'string') {
-        
+
         if (Object.keys(obj).length == 1) {
           newObj[path] = {};
           newObj[path][String(key) + '/'] = obj[key];
@@ -74,7 +74,7 @@ HierarchyGeneratorService.prototype.compressHierarchy = function(hierarchy) {
         else {
           newObj[path] = obj[key];
         }
-        
+
         path = "";
         continue;
       }
@@ -85,11 +85,11 @@ HierarchyGeneratorService.prototype.compressHierarchy = function(hierarchy) {
         path = "";
         continue;
       }
-      
+
       traverse(obj[key], newObj, path);
-      
+
       path = "";
-      
+
     }
   }
 };
@@ -99,13 +99,13 @@ HierarchyGeneratorService.prototype.generateAndApplyHtml = function(hierarchy, s
   var list = $(document.createElement('ul'));
 
   var that = this;
-  
+
   $.each(structure, function(index, file) {
 
     var label = (typeof file == 'string') ? file : index;
-    
+
     var item = $('<li>' + label + '</li>');
-      
+
     if (typeof structure[index] === 'object') {
       item.addClass('folder');
     }
@@ -115,10 +115,10 @@ HierarchyGeneratorService.prototype.generateAndApplyHtml = function(hierarchy, s
       item.attr("data-file-id", "diff-" + that.cnt);
       that.cnt = that.cnt + 1;
     }
-    
+
     list.append(item);
     hierarchy.append(list);
-    
+
     if (typeof structure[index] === 'object') {
       that.generateAndApplyHtml(list, structure[index]);
     }

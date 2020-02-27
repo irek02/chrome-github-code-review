@@ -46,7 +46,7 @@ describe("The main script", function () {
   });
 
 
-  it('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
+  fit('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
 
     // Pop open the sidebar.
     pressZ(main);
