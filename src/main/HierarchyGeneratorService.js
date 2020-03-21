@@ -2,9 +2,10 @@ function HierarchyGeneratorService() {
   this.cnt = 0;
 }
 
-HierarchyGeneratorService.prototype.generateAndApplyHierarchyHtml = function(files, hierarchy) {
+HierarchyGeneratorService.prototype.generateAndApplyHierarchyHtml = function(files, fileIds, hierarchy) {
 
   this.files = files;
+  this.fileIds = fileIds;
   this.element = hierarchy;
 
   var compressedStructure = this.getCompressedHierarchy();
@@ -112,7 +113,7 @@ HierarchyGeneratorService.prototype.generateAndApplyHtml = function(hierarchy, s
     else if (typeof structure[index] === 'string') {
       item = $('<li><span class="file-name">' + label + '</span></li>');
       item.addClass('jk-file');
-      item.attr("data-file-id", "diff-" + that.cnt);
+      item.attr("data-file-id", that.fileIds[that.cnt]);
       that.cnt = that.cnt + 1;
     }
 

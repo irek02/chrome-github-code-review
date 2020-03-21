@@ -2,18 +2,18 @@ describe("The main script", function () {
 
   files = $('<div id="files"></div>');
 
-  file0 = $('<div id="diff-0" class="file"><div class="file-header" data-path="Gemfile">Gemfile</div></div>');
-  file1 = $('<div id="diff-1" class="file"><div class="file-header" data-path="Gemfile.lock">Gemfile.lock</div></div>');
-  file2 = $('<div id="diff-2" class="file"><div class="file-header" data-path="lib/Helper/Doc/Link.php">lib/Helper/Doc/Link.php</div></div>');
-  file3 = $('<div id="diff-3" class="file"><div class="file-header" data-path="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</div></div>');
-  file4 = $('<div id="diff-4" class="file"><div class="file-header" data-path="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</div></div>');
-  file5 = $('<div id="diff-5" class="file"><div class="file-header" data-path="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</div></div>');
-  file6 = $('<div id="diff-6" class="file"><div class="file-header" data-path="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</div></div>');
-  file7 = $('<div id="diff-7" class="file"><div class="file-header" data-path="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</div></div>');
-  file8 = $('<div id="diff-8" class="file"><div class="file-header" data-path="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</div></div>');
-  file9 = $('<div id="diff-9" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</div></div>');
-  file10 = $('<div id="diff-10" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</div></div>');
-  file11 = $('<div id="diff-11" class="file"><div class="file-header" data-path="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</div></div>');
+  file0 = $('<div id="diff-3571b315d33821691d0d816f4c014090" class="file"><div class="file-header" data-path="Gemfile">Gemfile</div></div>');
+  file1 = $('<div id="diff-3571b315d33821691d0d816f4c014091" class="file"><div class="file-header" data-path="Gemfile.lock">Gemfile.lock</div></div>');
+  file2 = $('<div id="diff-3571b315d33821691d0d816f4c014092" class="file"><div class="file-header" data-path="lib/Helper/Doc/Link.php">lib/Helper/Doc/Link.php</div></div>');
+  file3 = $('<div id="diff-3571b315d33821691d0d816f4c014093" class="file"><div class="file-header" data-path="src/Application/Access/UserAccess.php">../Application/Access/UserAccess.php</div></div>');
+  file4 = $('<div id="diff-3571b315d33821691d0d816f4c014094" class="file"><div class="file-header" data-path="src/Application/Access/TokenAccess.php">../Application/Access/TokenAccess.php</div></div>');
+  file5 = $('<div id="diff-3571b315d33821691d0d816f4c014095" class="file"><div class="file-header" data-path="src/Application/Finder/OrganizationFinderInterface.php">.../Finder/OrganizationFinderInterface.php</div></div>');
+  file6 = $('<div id="diff-3571b315d33821691d0d816f4c014096" class="file"><div class="file-header" data-path="src/Infrastructure/Finder/DrupalApplicationFinder.php">src/Infrastructure/Finder/DrupalApplicationFinder.php</div></div>');
+  file7 = $('<div id="diff-3571b315d33821691d0d816f4c014097" class="file"><div class="file-header" data-path="src/Infrastructure/Finder/DrupalOrganizationFinder.php">src/Infrastructure/Finder/DrupalOrganizationFinder.php</div></div>');
+  file8 = $('<div id="diff-3571b315d33821691d0d816f4c014098" class="file"><div class="file-header" data-path="tests/Application/Access/AccountAccessTest.php">tests/Application/Access/AccountAccessTest.php</div></div>');
+  file9 = $('<div id="diff-3571b315d33821691d0d816f4c014099" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/PermissionsAccessTest.php">tests/Application/Access/Permissions/PermissionsAccessTest.php</div></div>');
+  file10 = $('<div id="diff-3571b315d33821691d0d816f4c014010" class="file"><div class="file-header" data-path="tests/Application/Access/Permissions/RobotAccessTest.php">tests/Application/Access/Permissions/RobotAccessTest.php</div></div>');
+  file11 = $('<div id="diff-3571b315d33821691d0d816f4c014011" class="file"><div class="file-header" data-path="tests/Application/Access/UserAccessTest.php">tests/Application/Access/UserAccessTest.php</div></div>');
 
   comment1 = $('<div class="js-comment unminimized-comment">Comment!</div>');
   file0.append(comment1);
@@ -46,7 +46,7 @@ describe("The main script", function () {
   });
 
 
-  fit('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
+  it('should jump to the next file when pressing "j" and to the previous file when pressing "k"', function () {
 
     // Pop open the sidebar.
     pressZ(main);
@@ -120,7 +120,7 @@ describe("The main script", function () {
   it('should count number of comments per file', function () {
 
     var commentCountStr = $('#jk-hierarchy')
-      .find('.jk-file[data-file-id="diff-0"]')
+      .find('.jk-file[data-file-id="diff-3571b315d33821691d0d816f4c014090"]')
       .find('.comment-count')
       .text();
 

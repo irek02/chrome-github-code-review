@@ -29,7 +29,7 @@ AppInteractionService.prototype.attachJumpOnClickBehavior = function (element) {
   var that = this;
 
   $(element).find('.jk-file').click(function (e) {
-    that.scrollTo($('.file-header div:contains("' + e.target.innerText + '")'));
+    that.scrollTo($('#' + $(this).data('file-id')));
     that.currentFileId = $(this).data('file-id').split('-')[1];
   });
 
