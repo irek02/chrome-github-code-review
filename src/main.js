@@ -29,7 +29,7 @@ Main.prototype.generateApp = function () {
 
   var files = [];
   var fileIds = [];
-  $.each($('.file'), function (index, item) {
+  $.each($('.file[id^=diff-]'), function (index, item) {
     var file = $(item).find('.file-header[data-path]').data('path');
     if (file) {
       files[index] = file;

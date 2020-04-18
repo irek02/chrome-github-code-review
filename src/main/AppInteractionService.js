@@ -87,7 +87,7 @@ AppInteractionService.prototype.updateCurentDiffPos = function () {
 };
 
 AppInteractionService.prototype.getFiles = function () {
-  return $('.file');
+  return $('.file[id^=diff-]');
 };
 
 AppInteractionService.prototype.getComments = function () {
