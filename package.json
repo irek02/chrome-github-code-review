@@ -4,7 +4,7 @@
   "description": "Chrome extension to improve code review experience on GitHub.com",
   "main": "main.js",
   "devDependencies": {
-    "async": "^2.0.0-rc.5",
+    "async": "^2.6.4",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
